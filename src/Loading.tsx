@@ -1,8 +1,6 @@
-import loading from "./assets/loading.svg";
-
 const Loading = () => (
   <div className="Spinner">
-    <img src={loading} alt="Loading" />
+    <img src="/public/loading.svg" alt="Loading" />
   </div>
 );
 

@@ -1,4 +1,4 @@
-export const domain = "drifterz28.auth0.com";
+export const domain = "car-maintain.us.auth0.com";
 export const auth0Params = {
   authorizationParams: {
     audience: `https://${domain}/api/v2/`,
