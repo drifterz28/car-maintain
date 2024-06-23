@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { domain, auth0Params } from "./constants";
-import { useQuery } from "@tanstack/react-query";
 
 export const useSaveUserMetadata = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -40,24 +39,25 @@ export const useSaveUserMetadata = () => {
 export const useUserMetadata = () => {
   const {user, getAccessTokenSilently } = useAuth0();
 
-  return useQuery({
-    queryKey: ['USER_META_DATA', user?.sub],
-    queryFn: async () => {
-      try {
-        const accessToken = await getAccessTokenSilently(auth0Params);
-        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
-        const metadataResponse = await fetch(userDetailsByIdUrl, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const data = await metadataResponse.json();
+  // return useQuery({
+  //   queryKey: ['META_DATA'],
+  //   queryFn: async () => {
+  //     if(!user) return {};
+  //     try {
+  //       const accessToken = await getAccessTokenSilently(auth0Params);
+  //       const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
+  //       const metadataResponse = await fetch(userDetailsByIdUrl, {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       });
+  //       const {user_metadata} = await metadataResponse.json();
 
-        return data;
-      } catch (e) {
-        // @ts-expect-error event unknown
-        console.log(e.message);
-      }
-    },
-  })
+  //       return user_metadata || {};
+  //     } catch (e) {
+  //       // @ts-expect-error event unknown
+  //       console.log(e.message);
+  //     }
+  //   },
+  // })
 };

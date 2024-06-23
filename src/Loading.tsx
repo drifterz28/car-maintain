@@ -1,6 +1,6 @@
 const Loading = () => (
   <div className="Spinner">
-    <img src="/public/loading.svg" alt="Loading" />
+    <img src="/loading.svg" alt="Loading" />
   </div>
 );
 
