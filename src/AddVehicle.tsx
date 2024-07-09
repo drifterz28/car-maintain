@@ -11,7 +11,7 @@ import {
   Box,
 } from "@mui/material";
 
-import { useSaveUserMetadata } from "./hooks";
+import { useSaveUserMetadata, useUserMetadata } from "./hooks";
 import { getCarsYear } from "./helpers";
 
 const style = {
@@ -26,7 +26,18 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
+const btnStyle = {
+  position: "absolute" as const,
+  color: "#000",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 interface AddVehicleProps {
   open: boolean;
   setOpen: (arg: boolean) => void;
@@ -35,6 +46,8 @@ interface AddVehicleProps {
 const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
   const handleClose = () => setOpen(false);
   // const [, setUserMetadata] = useSaveUserMetadata();
+  // const { data } = useUserMetadata();
+
   const [carData, setCarData] = useState({});
   const [carMakes, setCarMakes] = useState([]);
   const [carModels, setCarModels] = useState([]);
@@ -64,7 +77,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
         !!formData.make &&
         !!formData.model &&
         !!formData.year &&
-        !!formData.bodyStyle;
+        (!!formData.bodyStyle || (name === "bodyStyle" && !!value));
       setFormData({ ...formData, [name]: value, isClean });
     }
   };
@@ -104,7 +117,9 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.year, formData.make, formData.model, formData.bodyStyle]);
 
-  const saveCar = () => {};
+  const saveCar = () => {
+    // setUserMetadata(formData);
+  };
   return (
     <Modal
       open={open}
@@ -231,9 +246,15 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
             </FormControl>
           </>
         )}
-        <Button disabled={!formData.isClean} onClick={saveCar}>
-          Add Car
-        </Button>
+        <Box mt={2}>
+          <Button
+            variant="contained"
+            disabled={!formData.isClean}
+            onClick={saveCar}
+          >
+            Add Car
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );

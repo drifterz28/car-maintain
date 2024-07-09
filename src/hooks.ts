@@ -4,8 +4,8 @@ import { domain, auth0Params } from "./constants";
 
 export const useSaveUserMetadata = () => {
   const { user, getAccessTokenSilently } = useAuth0();
-  const [userMetadata, setUserMetadata] = useState(null);
-
+  const [userMetadata, setUserMetadata] = useState([]);
+  console.log(userMetadata)
   useEffect(() => {
     const getUserMetadata = async () => {
       const raw = JSON.stringify({
@@ -37,27 +37,30 @@ export const useSaveUserMetadata = () => {
 };
 
 export const useUserMetadata = () => {
-  const {user, getAccessTokenSilently } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
+  const [userMetadata, setUserMetadata] = useState(null);
 
-  // return useQuery({
-  //   queryKey: ['META_DATA'],
-  //   queryFn: async () => {
-  //     if(!user) return {};
-  //     try {
-  //       const accessToken = await getAccessTokenSilently(auth0Params);
-  //       const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
-  //       const metadataResponse = await fetch(userDetailsByIdUrl, {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       });
-  //       const {user_metadata} = await metadataResponse.json();
+  useEffect(() => {
+    const getUserMetadata = async () => {
+      if(!user?.sub) return;
+      try {
+        const accessToken = await getAccessTokenSilently(auth0Params);
+        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
+        const metadataResponse = await fetch(userDetailsByIdUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const {user_metadata} = await metadataResponse.json();
+        setUserMetadata(user_metadata);
+      } catch (e) {
+        // @ts-expect-error event unknown
+        console.log(e.message);
+      }
+    };
 
-  //       return user_metadata || {};
-  //     } catch (e) {
-  //       // @ts-expect-error event unknown
-  //       console.log(e.message);
-  //     }
-  //   },
-  // })
+    getUserMetadata();
+  }, [getAccessTokenSilently, user?.sub, user?.name]);
+
+  return userMetadata;
 };
