@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { domain, auth0Params } from "./constants";
+import { useEffect, useState } from 'react';
+
+import { useAuth0 } from '@auth0/auth0-react';
+
+import { domain, auth0Params } from './constants';
 
 export const useSaveUserMetadata = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState([]);
-  console.log(userMetadata)
+  console.log(userMetadata);
   useEffect(() => {
     const getUserMetadata = async () => {
       const raw = JSON.stringify({
@@ -16,12 +18,12 @@ export const useSaveUserMetadata = () => {
         const accessToken = await getAccessTokenSilently();
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
         await fetch(userDetailsByIdUrl, {
-          method: "PATCH",
+          method: 'PATCH',
           body: raw,
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         });
       } catch (e: unknown) {
@@ -42,7 +44,7 @@ export const useUserMetadata = () => {
 
   useEffect(() => {
     const getUserMetadata = async () => {
-      if(!user?.sub) return;
+      if (!user?.sub) return;
       try {
         const accessToken = await getAccessTokenSilently(auth0Params);
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
@@ -51,7 +53,7 @@ export const useUserMetadata = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        const {user_metadata} = await metadataResponse.json();
+        const { user_metadata } = await metadataResponse.json();
         setUserMetadata(user_metadata);
       } catch (e) {
         // @ts-expect-error event unknown

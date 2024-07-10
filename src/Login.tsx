@@ -1,6 +1,6 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import Button from "@mui/material/Button";
-import { Grid } from "@mui/material";
+import { useAuth0 } from '@auth0/auth0-react';
+import { Grid } from '@mui/material';
+import Button from '@mui/material/Button';
 
 export const Login = () => {
   const { loginWithRedirect } = useAuth0();
@@ -17,7 +17,7 @@ export const Login = () => {
         variant="contained"
         size="large"
         onClick={() => loginWithRedirect()}
-        style={{ marginBottom: "24px" }}
+        style={{ marginBottom: '24px' }}
       >
         Log In
       </Button>

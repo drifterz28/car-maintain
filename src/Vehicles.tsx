@@ -1,15 +1,25 @@
-import { useState } from "react";
-import { Card, Grid, Button } from "@mui/material";
+import { useEffect, useState } from 'react';
 
-import AddVehicle from "./AddVehicle";
+import { useAuth0 } from '@auth0/auth0-react';
+import { Card, Grid, Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+
+import AddVehicle from './AddVehicle';
+import { fetchVehicleData } from './vehiclesSlice';
 // import { useSelector } from "react-redux";
 // import { Car } from "./helpers";
 
 const Vehicles = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { user, getAccessTokenSilently } = useAuth0();
   const handleOpen = () => setOpen(true);
-  // const state = useSelector((state) => state.vehicle);
-  // console.log(state);
+
+  useEffect(() => {
+    // @ts-expect-error this will get fixed
+    dispatch(fetchVehicleData({ user, getAccessTokenSilently }));
+  }, [dispatch]);
+
   return (
     <Grid>
       <Card>

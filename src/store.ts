@@ -1,10 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
-import vehiclesReducer from './vehiclesSlice'
-import userReducer from './userSlice'
+import { configureStore } from '@reduxjs/toolkit';
+
+import userReducer from './userSlice';
+import vehiclesReducer from './vehiclesSlice';
 
 export default configureStore({
   reducer: {
-    vehicles:vehiclesReducer,
+    vehicles: vehiclesReducer,
     user: userReducer,
   },
-})
+});

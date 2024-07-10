@@ -1,81 +1,49 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-// import { useAuth0 } from "@auth0/auth0-react";
+import { createSlice, createAsyncThunk, AsyncThunk } from '@reduxjs/toolkit';
 
-import { domain, auth0Params } from "./constants";
+import { domain, auth0Params } from './constants';
+import { User } from './types';
 
-// export const useUserMetadata = () => {
-//   const { user, getAccessTokenSilently } = useAuth0();
-//   const [userMetadata, setUserMetadata] = useState(null);
+interface FetchData {
+  user: User,
+  getAccessTokenSilently: (string) => string
+}
 
-//   useEffect(() => {
-//     const getUserMetadata = async () => {
-//       if(!user?.sub) return;
-//       try {
-//         const accessToken = await getAccessTokenSilently(auth0Params);
-//         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
-//         const metadataResponse = await fetch(userDetailsByIdUrl, {
-//           headers: {
-//             Authorization: `Bearer ${accessToken}`,
-//           },
-//         });
-//         const {user_metadata} = await metadataResponse.json();
-//         setUserMetadata(user_metadata);
-//       } catch (e) {
-//         // @ts-expect-error event unknown
-//         console.log(e.message);
-//       }
-//     };
-
-//     getUserMetadata();
-//   }, [getAccessTokenSilently, user?.sub, user?.name]);
-
-//   return userMetadata;
-// };
-
-
-export const fetchUserData = createAsyncThunk(
-  'users/fetchByIdStatus',
-  // @ts-expect-error nothing
-  async ({user, getAccessTokenSilently}) => {
+export const fetchVehicleData: AsyncThunk<any, FetchData, any> = createAsyncThunk(
+  'fetchVehicleData',
+  async ({ user, getAccessTokenSilently } : FetchData) => {
     const accessToken = await getAccessTokenSilently(auth0Params);
     const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
-        const metadataResponse = await fetch(userDetailsByIdUrl, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const {user_metadata} = await metadataResponse.json();
-        return user_metadata;
-  },)
+    const metadataResponse = await fetch(userDetailsByIdUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await metadataResponse.json();
+    return data;
+  },
+);
 
 export const vehiclesSlice = createSlice({
   name: 'vehicles',
   initialState: [],
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes.
-      // Also, no return statement is required from these functions.
-      state
+    // @ts-expect-error someday
+    [fetchVehicleData.pending]: (state) => {
+      console.log('pending');
+      state;
     },
-    // @ts-expect-error this will be fixed
-    [fetchUserData.fulfilled]: (state, { payload }) => {
-      console.log(payload)
-      state
+    // @ts-expect-error someday
+    [fetchVehicleData.fulfilled]: (state, action) => {
+      console.log(action);
+      state = action.payload;
     },
-    decrement: (state) => {
-      state
-    },
-    incrementByAmount: (state, action) => {
-      console.log(action)
-      state
+    // @ts-expect-error someday
+    [fetchVehicleData.rejected]: (state) => {
+      state;
     },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = vehiclesSlice.actions
+// export const { fetchVehicleData } = vehiclesSlice.actions
 
-export default vehiclesSlice.reducer
+export default vehiclesSlice.reducer;

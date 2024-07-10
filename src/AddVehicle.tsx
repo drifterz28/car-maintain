@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 import {
   FormControl,
@@ -9,35 +9,23 @@ import {
   Typography,
   Button,
   Box,
-} from "@mui/material";
+} from '@mui/material';
 
-import { useSaveUserMetadata, useUserMetadata } from "./hooks";
-import { getCarsYear } from "./helpers";
+import { getCarsYear } from './helpers';
 
 const style = {
-  position: "absolute" as const,
-  color: "#000",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute' as const,
+  color: '#000',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
-const btnStyle = {
-  position: "absolute" as const,
-  color: "#000",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+
 interface AddVehicleProps {
   open: boolean;
   setOpen: (arg: boolean) => void;
@@ -52,24 +40,24 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
   const [carMakes, setCarMakes] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [bodyStyle, setBodyStyle] = useState([]);
-  const [yearPulled, setYearPulled] = useState("");
+  const [yearPulled, setYearPulled] = useState('');
   const [formData, setFormData] = useState({
-    year: "",
-    make: "",
-    model: "",
-    bodyStyle: "",
+    year: '',
+    make: '',
+    model: '',
+    bodyStyle: '',
     isClean: false,
   });
 
   const handleChange = (e: unknown) => {
     // @ts-expect-error Event is defined
     const { name, value } = e.target;
-    if (name === "year" && formData.year !== value) {
+    if (name === 'year' && formData.year !== value) {
       setFormData({
         year: value,
-        make: "",
-        model: "",
-        bodyStyle: "",
+        make: '',
+        model: '',
+        bodyStyle: '',
         isClean: false,
       });
     } else {
@@ -77,7 +65,7 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
         !!formData.make &&
         !!formData.model &&
         !!formData.year &&
-        (!!formData.bodyStyle || (name === "bodyStyle" && !!value));
+        (!!formData.bodyStyle || (name === 'bodyStyle' && !!value));
       setFormData({ ...formData, [name]: value, isClean });
     }
   };
@@ -191,13 +179,11 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
             onChange={handleChange}
           >
             <MenuItem value="">Select Make</MenuItem>
-            {carMakes.map((make, i) => {
-              return (
+            {carMakes.map((make, i) => (
                 <MenuItem key={i} value={make}>
                   {make}
                 </MenuItem>
-              );
-            })}
+              ))}
           </Select>
         </FormControl>
         <Typography sx={{ mt: 2 }}>Model</Typography>
@@ -212,13 +198,11 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
             onChange={handleChange}
           >
             <MenuItem value="">Select model</MenuItem>
-            {carModels.map((model, i) => {
-              return (
+            {carModels.map((model, i) => (
                 <MenuItem key={i} value={model}>
                   {model}
                 </MenuItem>
-              );
-            })}
+              ))}
           </Select>
         </FormControl>
         {bodyStyle.length > 0 && (
@@ -235,13 +219,11 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ open, setOpen }) => {
                 onChange={handleChange}
               >
                 <MenuItem value="">Select body style</MenuItem>
-                {bodyStyle.map((style, i) => {
-                  return (
+                {bodyStyle.map((style, i) => (
                     <MenuItem key={i} value={style}>
                       {style}
                     </MenuItem>
-                  );
-                })}
+                  ))}
               </Select>
             </FormControl>
           </>
