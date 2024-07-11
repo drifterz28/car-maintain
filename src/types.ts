@@ -13,6 +13,9 @@ export type Car = {
   make: string;
   model: string;
   year?: string;
+  info?: {
+    [key: string]: string;
+  };
 };
 
 interface CarList {

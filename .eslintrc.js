@@ -1,8 +1,5 @@
 module.exports = {
-  extends: [
-    'airbnb',
-    'airbnb-base',
-  ],
+  extends: ['airbnb', 'airbnb-base'],
   plugins: ['react-hooks'],
   parser: '@typescript-eslint/parser',
   env: {
@@ -64,6 +61,7 @@ module.exports = {
     'default-param-last': 0,
     'global-require': 0,
     'implicit-arrow-linebreak': 0,
+    'linebreak-style': 'off',
     'import/no-cycle': 0,
     'import/no-dynamic-require': 0,
     'import/no-extraneous-dependencies': 0,
